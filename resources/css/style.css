@@ -1,0 +1,17 @@
+.slideshow {
+    margin: 0px auto;
+    padding: 0px;
+    margin-bottom: 10px;
+}
+.menu {
+    padding: 5px;
+    background-color: #e8e8e8;
+}
+.tab-pane-content{
+    margin-top: 20px;
+}
+#footer{
+    background-color: #e8e8e8;
+    text-align: center;
+    font-size: 10pt;
+}
