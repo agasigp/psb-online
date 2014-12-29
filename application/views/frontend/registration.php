@@ -1,3 +1,4 @@
+<h3>Pendaftaran Calon Siswa Baru</h3>
 <ul class="nav nav-tabs" role="tablist">
     <li class="active"><a href="#siswa" role="tab" data-toggle="tab">Biodata Siswa</a></li>
     <li><a href="#ortu" role="tab" data-toggle="tab">Biodata Orang Tua/Wali</a></li>
@@ -6,9 +7,8 @@
     <li><a href="#prestasi" role="tab" data-toggle="tab">Prestasi</a></li>
 </ul>
 
-<?= form_open('registration/do_register', array('class' => 'form-horizontal')); ?>
+<?= form_open('registration/do_registration', array('class' => 'form-horizontal')); ?>
 <div class="tab-content">
-    <?= $this->session->flashdata('info'); ?>
     <div class="tab-pane tab-pane-content fade in active" id="siswa">
         <div class="form-group">
             <?= form_label('Program Keahlian', 'program-keahlian', array('class' => 'col-sm-2 control-label')) ?>
@@ -19,7 +19,7 @@
                 {
                     $jurusan[$value->id] = $value->program_keahlian;
                 }
-                echo form_dropdown('program_keahlian', $jurusan, null, 'class="form-control" id="program-keahlian"');
+                echo form_dropdown('program_keahlian', $jurusan, null, 'class="form-control" id="program-keahlian required"');
                 ?>
             </div>
         </div>
@@ -32,7 +32,7 @@
                 {
                     $sekolah[$value->id] = $value->nama;
                 }
-                echo form_dropdown('sekolah', $sekolah, null, 'class="form-control" id="sekolah"');
+                echo form_dropdown('sekolah', $sekolah, null, 'class="form-control" id="sekolah required"');
                 ?>
             </div>
         </div>
@@ -43,6 +43,7 @@
                 form_input(array(
                     'name' => 'nama',
                     'id' => 'nama-siswa',
+                    'required' => null,
                     'placeholder' => 'Nama Lengkap',
                     'class' => 'form-control')
                 );
@@ -56,6 +57,7 @@
                 form_input(array(
                     'name' => 'nisn',
                     'id' => 'nisn',
+                    'required' => null,
                     'placeholder' => 'NISN',
                     'class' => 'form-control')
                 );
@@ -69,6 +71,7 @@
                 form_input(array(
                     'name' => 'tempat_lahir',
                     'id' => 'ttl',
+                    'required' => null,
                     'placeholder' => 'Tempat Lahir',
                     'class' => 'form-control')
                 );
@@ -79,6 +82,8 @@
                 form_input(array(
                     'name' => 'tgl_lahir',
                     'placeholder' => 'Tanggal Lahir',
+                    'type' => 'date',
+                    'required' => null,
                     'class' => 'form-control')
                 );
                 ?>
@@ -104,7 +109,7 @@
                 {
                     $agama[$value->id] = $value->agama;
                 }
-                echo form_dropdown('agama', $agama, null, 'class="form-control" id="agama"');
+                echo form_dropdown('agama', $agama, null, 'class="form-control" id="agama required"');
                 ?>
             </div>
         </div>
@@ -115,6 +120,7 @@
                 form_input(array(
                     'name' => 'alamat',
                     'id' => 'alamat-lengkap',
+                    'required' => null,
                     'placeholder' => 'Alamat Lengkap',
                     'class' => 'form-control')
                 );
@@ -128,6 +134,7 @@
                 form_input(array(
                     'name' => 'alamat_jogja',
                     'id' => 'alamat-lengkap-jogja',
+                    'required' => null,
                     'placeholder' => 'Alamat Lengkap di Jogja',
                     'class' => 'form-control')
                 );
@@ -141,6 +148,7 @@
                 form_input(array(
                     'name' => 'no_telepon',
                     'id' => 'no_telp',
+                    'required' => null,
                     'placeholder' => 'No. telepon',
                     'class' => 'form-control')
                 );
@@ -156,6 +164,7 @@
                 <?=
                 form_input(array(
                     'name' => 'ayah',
+                    'required' => null,
                     'placeholder' => 'Nama Lengkap Ayah',
                     'class' => 'form-control')
                 );
@@ -165,6 +174,7 @@
                 <?=
                 form_input(array(
                     'name' => 'ibu',
+                    'required' => null,
                     'placeholder' => 'Nama Lengkap Ibu',
                     'class' => 'form-control')
                 );
@@ -178,6 +188,7 @@
                 form_input(array(
                     'name' => 'alamat_ortu',
                     'id' => 'alamat-ortu',
+                    'required' => null,
                     'placeholder' => 'Alamat Lengkap',
                     'class' => 'form-control')
                 );
@@ -195,7 +206,7 @@
                     $pekerjaan_ayah[$value->id] = $value->pekerjaan;
                     $pekerjaan_ibu[$value->id] = $value->pekerjaan;
                 }
-                echo form_dropdown('pekerjaan_ayah', $pekerjaan_ayah, null, 'class="form-control"');
+                echo form_dropdown('pekerjaan_ayah', $pekerjaan_ayah, null, 'class="form-control required"');
                 ?>
             </div>
             <div class="col-sm-3"><?= form_dropdown('pekerjaan_ibu', $pekerjaan_ibu, null, 'class="form-control"'); ?></div>
@@ -207,6 +218,7 @@
                 form_input(array(
                     'name' => 'wali',
                     'id' => 'wali',
+                    'required' => null,
                     'placeholder' => 'Nama Wali',
                     'class' => 'form-control')
                 );
@@ -233,6 +245,7 @@
                 form_input(array(
                     'name' => 'alamat_wali',
                     'id' => 'alamat-lengkap-wali',
+                    'required' => null,
                     'placeholder' => 'Alamat Lengkap Wali',
                     'class' => 'form-control')
                 );
@@ -246,6 +259,7 @@
                 form_input(array(
                     'name' => 'no_telepon_wali',
                     'id' => 'no-telp-wali',
+                    'required' => null,
                     'placeholder' => 'No. telepon',
                     'class' => 'form-control')
                 );
@@ -258,97 +272,79 @@
         <?php foreach ($mapels as $value): ?>
             <div class="form-group">
                 <?php
+                $form_label = null;
+                $form_input = null;
+
                 switch ($value->id)
                 {
                     case 1:
                         $form_label = form_label('Bahasa Indonesia', 'bhs-indo', array('class' => 'col-sm-2 control-label'));
                         $form_input = form_input(array(
                             'name' => 'bhs_indo',
+                            'type' => 'number',
+                            'min' => '0',
+                            'max' => '100',
                             'id' => 'bhs-indo',
+                            'required' => null,
                             'placeholder' => 'Bahasa Indonesia',
                             'class' => 'form-control')
                         );
+                        echo $form_label;
                         break;
                     case 2:
                         $form_label = form_label('Bahasa Inggris', 'bhs-inggris', array('class' => 'col-sm-2 control-label'));
                         $form_input = form_input(array(
                             'name' => 'bhs_inggris',
+                            'type' => 'number',
+                            'min' => '0',
+                            'max' => '100',
                             'id' => 'bhs-inggris',
+                            'required' => null,
                             'placeholder' => 'Bahasa Inggris',
                             'class' => 'form-control')
                         );
+                        echo $form_label;
                         break;
-                    case 1:
+                    case 3:
                         $form_label = form_label('Matematika', 'matematika', array('class' => 'col-sm-2 control-label'));
                         $form_input = form_input(array(
                             'name' => 'matematika',
+                            'type' => 'number',
+                            'min' => '0',
+                            'max' => '100',
                             'id' => 'matematika',
-                            'placeholder' => 'Bahasa Indonesia',
+                            'required' => null,
+                            'placeholder' => 'Matematika',
                             'class' => 'form-control')
                         );
+                        echo $form_label;
+                        break;
+                    case 4:
+                        $form_label = form_label('IPA', 'ipa', array('class' => 'col-sm-2 control-label'));
+                        $form_input = form_input(array(
+                            'name' => 'ipa',
+                            'type' => 'number',
+                            'min' => '0',
+                            'max' => '100',
+                            'id' => 'ipa',
+                            'required' => null,
+                            'placeholder' => 'Ilmu Pengetahuan Alam',
+                            'class' => 'form-control')
+                        );
+                        echo $form_label;
                         break;
                     default:
                         break;
                 }
                 ?>
+                <div class="col-sm-3">
+                    <?= $form_input ?>
+                </div>
             </div>
         <?php endforeach; ?>
-        <div class="form-group">
-            <?= form_label('Bahasa Indonesia', 'bhs-indo', array('class' => 'col-sm-2 control-label')); ?>
-            <div class="col-sm-3">
-                <?=
-                form_input(array(
-                    'name' => 'bhs_indo',
-                    'id' => 'bhs-indo',
-                    'placeholder' => 'Bahasa Indonesia',
-                    'class' => 'form-control')
-                );
-                ?>
-            </div>
-        </div>
-        <div class="form-group">
-            <?= form_label('Bahasa Inggris', 'bhs-inggris', array('class' => 'col-sm-2 control-label')); ?>
-            <div class="col-sm-3">
-                <?=
-                form_input(array(
-                    'name' => 'bhs_inggris',
-                    'id' => 'bhs-inggris',
-                    'placeholder' => 'Bahasa Inggris',
-                    'class' => 'form-control')
-                );
-                ?>
-            </div>
-        </div>
-        <div class="form-group">
-            <?= form_label('Matematika', 'matematika', array('class' => 'col-sm-2 control-label')); ?>
-            <div class="col-sm-3">
-                <?=
-                form_input(array(
-                    'name' => 'matematika',
-                    'id' => 'matematika',
-                    'placeholder' => 'Matematika',
-                    'class' => 'form-control')
-                );
-                ?>
-            </div>
-        </div>
-        <div class="form-group">
-            <?= form_label('IPA', 'ipa', array('class' => 'col-sm-2 control-label')); ?>
-            <div class="col-sm-3">
-                <?=
-                form_input(array(
-                    'name' => 'ipa',
-                    'id' => 'ipa',
-                    'placeholder' => 'IPA',
-                    'class' => 'form-control')
-                );
-                ?>
-            </div>
-        </div>
-
     </div>
 
-    <div class="tab-pane tab-pane-content fade" id="prestasi">       
+    <div class="tab-pane tab-pane-content fade" id="prestasi">
         <div class="form-group">
             <?= form_label('Prestasi 1', 'prestasi1', array('class' => 'col-sm-2 control-label')); ?>
             <div class="col-sm-6">
@@ -357,6 +353,7 @@
                     'name' => 'prestasi1',
                     'id' => 'prestasi1',
                     'placeholder' => 'Prestasi 1',
+                    'required' => null,
                     'class' => 'form-control')
                 );
                 ?>

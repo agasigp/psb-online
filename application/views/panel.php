@@ -4,12 +4,21 @@
             <h3 class="panel-title">Hasil Seleksi</h3>
         </div>
         <div class="panel-body">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="No Pendaftaran">
+            <?= form_open('registration/search_registration'); ?>
+            <div class="input-group">              
+                <?=
+                form_input(array(
+                    'name' => 'no_pendaftaran',
+                    'required' => null,
+                    'placeholder' => 'No. Pendaftaran',
+                    'class' => 'form-control')
+                );
+                ?>
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" onclick="showalert();">Go!</button>
-                </span>
+                    <?= form_submit('save', 'Cari', 'class="btn btn-default"') ?>
+                </span>            
             </div><!-- /input-group -->
+            <?= form_close(); ?>
         </div>
     </div>
 

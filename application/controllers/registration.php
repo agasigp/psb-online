@@ -7,36 +7,40 @@
  */
 class Registration extends CI_Controller {
 
-    //put your code here
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model(array('registration_model', 'program_keahlian_model'));
+//        $this->output->enable_profiler(TRUE);
+    }
+
     public function index()
     {
         $data['view'] = "frontend/index";
         $this->load->view('template', $data);
     }
 
-    public function show_register()
+    public function show_registration()
     {
-        $this->load->model(array('program_keahlian_model', 'agama_model', 'pekerjaan_model', 'sekolah_model', 'mapel_model'));
+        $this->load->model(array('agama_model', 'pekerjaan_model', 'sekolah_model', 'mapel_model'));
         $data = array(
             'program_keahlian' => $this->program_keahlian_model->get_program_keahlian(),
             'agamas' => $this->agama_model->get_agama(),
             'pekerjaans' => $this->pekerjaan_model->get_pekerjaan(),
             'sekolahs' => $this->sekolah_model->get_sekolah(),
             'mapels' => $this->mapel_model->get_mapel(),
-            'view' => 'frontend/register'
+            'view' => 'frontend/registration'
         );
 
         $this->load->view('template', $data);
     }
 
-    public function do_register()
+    public function do_registration()
     {
-        $this->load->model(array('registration_model', 'program_keahlian_model'));
-        $last_id = empty($this->registration_model->get_last_id()->last_id) ? 0 : $this->registration_model->get_last_id()->last_id;
-//        print_r($this->registration_model->get_last_id());exit;
+        $last_id = $this->registration_model->get_last_id();
         $no_pendaftaran = null;
 
-        switch ($last_id)
+        switch ($this->input->post('program_keahlian'))
         {
             case 1:
                 $kode_jurusan = $this->program_keahlian_model->get_program_keahlian_by_id(1)->kode;
@@ -56,7 +60,7 @@ class Registration extends CI_Controller {
                 break;
         }
 
-        $data = array(
+        $data1 = array(
             'siswa' => array(
                 'program_keahlian_id' => $this->input->post('program_keahlian'),
                 'no_pendaftaran' => $no_pendaftaran,
@@ -94,10 +98,61 @@ class Registration extends CI_Controller {
             )
         );
 
-        $this->registration_model->save_registration($data);
+        $this->registration_model->save_registration($data1);
+        $this->session->set_flashdata('no_pendaftaran', $no_pendaftaran);
+        $this->session->set_flashdata('info', '<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Data saved!</strong></div>');
         
-        $this->session->set_flashdata('info','<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Data saved!</strong></div>');
-        redirect('registration/show_register');
+        redirect('registration/show_success_registration');
+    }
+
+    public function show_success_registration()
+    {
+        $no_pendaftaran = $this->session->flashdata('no_pendaftaran');
+        $siswa = $this->registration_model->get_calon_siswa_by_no_pendaftaran($no_pendaftaran);
+//        print_r($siswa);exit;
+        $data = array(
+            'siswa' => $siswa,
+            'un' => $this->registration_model->get_nilai_un_by_id($siswa->id),
+            'prestasi' => $this->registration_model->get_prestasi_by_id($siswa->id),
+            'view' => 'frontend/registration_success'
+        );
+
+        $this->load->view('template', $data);
+    }
+
+    public function search_registration()
+    {
+        $no_pendaftaran = $this->input->post('no_pendaftaran');
+        $siswa = $this->registration_model->get_calon_siswa_by_no_pendaftaran($no_pendaftaran);
+
+        if (empty($siswa))
+        {
+            $data = array(
+                'no_pendaftaran' => $no_pendaftaran,
+                'view' => 'frontend/registration_success'
+            );
+        }
+        else
+        {
+            $data = array(
+                'siswa' => $siswa,
+                'un' => $this->registration_model->get_nilai_un_by_id($siswa->id),
+                'prestasi' => $this->registration_model->get_prestasi_by_id($siswa->id),
+                'view' => 'frontend/registration_success'
+            );
+        }
+        
+        $this->load->view('template', $data);
+    }
+
+    public function list_registration()
+    {
+        $data = array(
+            'registration' => $this->registration_model->get_result(),
+            'view' => 'frontend/registration_list'
+        );
+
+        $this->load->view('template', $data);
     }
 
     function _format_no_pendaftaran($num)
