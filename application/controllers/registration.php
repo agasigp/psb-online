@@ -24,11 +24,11 @@ class Registration extends CI_Controller {
     {
         $this->load->model(array('agama_model', 'pekerjaan_model', 'sekolah_model', 'mapel_model'));
         $data = array(
-            'program_keahlian' => $this->program_keahlian_model->get_program_keahlian(),
-            'agamas' => $this->agama_model->get_agama(),
-            'pekerjaans' => $this->pekerjaan_model->get_pekerjaan(),
-            'sekolahs' => $this->sekolah_model->get_sekolah(),
-            'mapels' => $this->mapel_model->get_mapel(),
+            'program_keahlian' => $this->program_keahlian_model->get_all_program_keahlian(),
+            'agamas' => $this->agama_model->get_all_agama(),
+            'pekerjaans' => $this->pekerjaan_model->get_all_pekerjaan(),
+            'sekolahs' => $this->sekolah_model->get_all_sekolah(),
+            'mapels' => $this->mapel_model->get_all_mapel(),
             'view' => 'frontend/registration'
         );
 
@@ -147,10 +147,19 @@ class Registration extends CI_Controller {
 
     public function list_registration()
     {
+        $this->load->library(array('pagination'));
+        $this->load->model(array('registration_model'));
+        $config['base_url'] = site_url('registration/list_registration');
+        $config['per_page'] = 10;
+        $config['total_rows'] = $this->registration_model->get_count_result();
+        $this->pagination->initialize($config);
+        
         $data = array(
-            'registration' => $this->registration_model->get_result(),
+            'registration' => $this->registration_model->get_result($config['per_page'], (int)$this->uri->segment('3')),
+            'program_keahlian' => $this->program_keahlian_model->get_all_program_keahlian(),
             'view' => 'frontend/registration_list'
         );
+//        print_r($data);exit;
 
         $this->load->view('template', $data);
     }
@@ -169,7 +178,9 @@ class Registration extends CI_Controller {
             case 4 : $NoTrans = "0" . $num;
                 break;
             default: $NoTrans = $num;
-        } return $NoTrans;
+        }
+        
+        return $NoTrans;
     }
 
 }

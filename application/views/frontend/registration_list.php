@@ -1,4 +1,20 @@
-<h3>Hasil Seleksi Penerimaan Siswa Baru</h3>
+<div class="row">
+    <div class="col-sm-10">
+        <h3>Hasil Seleksi Penerimaan Siswa Baru</h3>
+        <?php
+        echo form_open(null, array('class' => 'form-inline'));
+        $jurusan = array();
+        foreach ($program_keahlian as $value)
+        {
+            $jurusan[$value->id] = $value->program_keahlian;
+        }
+        echo form_dropdown('program_keahlian', $jurusan, null, 'class="form-control" id="program-keahlian required"');
+
+        echo form_close();
+        ?>
+    </div>
+</div>
+
 <table class="table table-condensed table-hover table-striped table-bordered">
     <thead>
         <tr>
@@ -18,30 +34,38 @@
         </tr>
     </thead>
     <tbody>
-        <?php $no = 1; ?>
+        <?php $no = (int) $this->uri->segment('3') + 1; ?>
         <?php foreach ($registration as $v): ?>
             <tr>
                 <td><?= $no; ?></td>
                 <td><?= $v->nama ?></td>
                 <td><?= $v->no_pendaftaran ?></td>
                 <td><?= $v->sekolah ?></td>
-                <td>85</td>
-                <td>80</td>
-                <td>80</td>
-                <td>70</td>
-                <td>500</td>
+                <?php
+                $nilai_un = explode(",", $v->nilai);
+                $bobot = explode(",", $v->bobot);
+                $sum = 0;
+//                print_r($bobot);exit;
+                foreach ($nilai_un as $k => $v)
+                {
+                    if (empty($bobot))
+                    {
+                        echo "<td>" . $v . "</td>";
+                    }
+                    else
+                    {
+                        $sum = $sum + ($v * $bobot[$k]);
+                        echo "<td>" . $v . "</td>";
+                    }
+                }
+//
+                ?>
+                <td><?= $sum; ?></td>
                 <td>Diterima</td>
             </tr>
-        <?php $no++; ?>
+            <?php $no++; ?>
         <?php endforeach; ?>
     </tbody>
 </table>
-<ul class="pagination">
-    <li class="disabled"><a href="#">&laquo;</a></li>
-    <li class="active"><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li><a href="#">&raquo;</a></li>
-</ul>
+
+<?= $this->pagination->create_links(); ?>

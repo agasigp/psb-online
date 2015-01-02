@@ -11,7 +11,8 @@
  *
  * @author agasi
  */
-class Registration_model extends CI_Model{
+class Registration_model extends CI_Model {
+
     //put your code here
     private $table_calon_siswa = "calon_siswa";
     private $table_nilai_un = "nilai_un";
@@ -43,7 +44,7 @@ class Registration_model extends CI_Model{
                 'nilai' => $data['mata_pelajaran']['ipa']
             )
         );
-        
+
         $prestasi = array(
             array(
                 'calon_siswa_id' => $this->db->insert_id(),
@@ -62,7 +63,7 @@ class Registration_model extends CI_Model{
                 'prestasi' => $data['prestasi']['prestasi4']
             )
         );
-        
+
         $this->db->insert_batch('nilai_un', $nilai_un);
         $this->db->insert_batch('prestasi', $prestasi);
         $this->db->trans_complete();
@@ -70,7 +71,7 @@ class Registration_model extends CI_Model{
 
     public function get_last_id()
     {
-        
+
 //        $this->db->where('')
         $query = $this->db->count_all($this->table_calon_siswa);
         return $query;
@@ -134,25 +135,40 @@ class Registration_model extends CI_Model{
     }
 
     public function get_prestasi_by_id($id_siswa)
-    {       
+    {
         $query = $this->db->get_where('prestasi', array('calon_siswa_id' => $id_siswa));
         return $query->result();
     }
 
-    public function get_result()
+    public function get_result($limit, $offset, $a = null)
     {
-        $this->db->select('cs.id,
-                cs.nama ,
+        $sql = "SELECT
+		@id := cs.id AS id,
+                @pk_id := cs.program_keahlian_id,
+                cs.program_keahlian_id,
+                cs.nama,
 		pk.program_keahlian,
 		cs.no_pendaftaran,
 		cs.nisn,
 		sk.nama AS sekolah,
-		cs.waktu_daftar');
-        $this->db->from('calon_siswa cs');
-        $this->db->join('program_keahlian pk', 'cs.program_keahlian_id = pk.id');
-        $this->db->join('sekolah sk', 'cs.sekolah_id = sk.id');
-        $query = $this->db->get();
-
+		cs.waktu_daftar,
+		(SELECT GROUP_CONCAT(un.nilai SEPARATOR ',') FROM nilai_un un WHERE un.calon_siswa_id = @id ORDER BY un.mata_pelajaran_id) AS nilai,
+                (SELECT GROUP_CONCAT(b.bobot SEPARATOR ',') FROM bobot b WHERE b.program_keahlian_id = @pk_id ORDER BY b.mata_pelajaran_id) AS bobot
+                FROM calon_siswa cs JOIN program_keahlian pk ON cs.program_keahlian_id = pk.id
+                JOIN sekolah sk ON cs.sekolah_id = sk.id 
+                LIMIT ? OFFSET ?";
+        
+        $query = $this->db->query($sql, array($limit, $offset));
         return $query->result();
     }
+
+    public function get_count_result()
+    {
+        $this->db->from('calon_siswa');
+//        $this->db->where('');
+        $query = $this->db->count_all_results();
+
+        return $query;
+    }
+
 }
