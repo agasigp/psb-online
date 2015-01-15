@@ -2,20 +2,19 @@
     <div class="col-sm-10">
         <h3>Hasil Seleksi Penerimaan Siswa Baru</h3>
         <?php
-        echo form_open(null, array('class' => 'form-inline'));
+        echo form_open(site_url('registration/list_registration'), array('class' => 'form-inline'));
         $jurusan = array();
         foreach ($program_keahlian as $value)
         {
             $jurusan[$value->id] = $value->program_keahlian;
         }
-        echo form_dropdown('program_keahlian', $jurusan, null, 'class="form-control" id="program-keahlian required"');
-
+        echo form_dropdown('program_keahlian', $jurusan, $program_keahlian_id, 'class="form-control" id="program-keahlian" required"');
         echo form_close();
         ?>
     </div>
 </div>
 
-<table class="table table-condensed table-hover table-striped table-bordered">
+<table class="table table-condensed table-hover table-striped table-bordered" id="registrationlist">
     <thead>
         <tr>
             <th rowspan="2">No</th>
@@ -24,7 +23,6 @@
             <th rowspan="2">Asal Sekolah</th>
             <th colspan="4">Nilai</th>
             <th rowspan="2">Total Skor Nilai</th>
-            <th rowspan="2">Status</th>
         </tr>
         <tr>
             <th>Bahasa Indonesia</th>
@@ -37,7 +35,7 @@
         <?php $no = (int) $this->uri->segment('3') + 1; ?>
         <?php foreach ($registration as $v): ?>
             <tr>
-                <td><?= $no; ?></td>
+                <td></td>
                 <td><?= $v->nama ?></td>
                 <td><?= $v->no_pendaftaran ?></td>
                 <td><?= $v->sekolah ?></td>
@@ -50,22 +48,21 @@
                 {
                     if (empty($bobot))
                     {
-                        echo "<td>" . $v . "</td>";
+                        echo "<td>".$v."</td>";
                     }
                     else
                     {
                         $sum = $sum + ($v * $bobot[$k]);
-                        echo "<td>" . $v . "</td>";
+                        echo "<td>".$v." (x".$bobot[$k].")</td>";
                     }
                 }
 //
                 ?>
                 <td><?= $sum; ?></td>
-                <td>Diterima</td>
             </tr>
             <?php $no++; ?>
         <?php endforeach; ?>
     </tbody>
 </table>
 
-<?= $this->pagination->create_links(); ?>
+

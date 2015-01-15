@@ -7,8 +7,8 @@
                     Pendaftaran PSB <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="daftar.html">Pendaftaran Siswa Baru</a></li>
-                    <li><a href="#">Data Pendaftar</a></li>
+                    <li><a href="<?= site_url('registration/show_registration') ?>">Pendaftaran Siswa Baru</a></li>
+                    <li><a href="<?= site_url('registration/list_registration') ?>">Data Pendaftar</a></li>
                     <li class="divider"></li>
                     <li><a href="info.html">Info Umum PSB</a></li>
                 </ul>

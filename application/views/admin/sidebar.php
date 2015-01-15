@@ -19,7 +19,10 @@
                     <span>PSB</span>
                 </a>
                 <ul class="sub">
-                    <li id="siswa"><a href="Siswa">Siswa</a></li>
+                    <li id="calon-siswa"><a href="<?= site_url('admin/siswa') ?>">Calon Siswa</a></li>
+                </ul>
+                <ul class="sub">
+                    <li id="siswa"><a href="<?= site_url('admin/siswa/show_siswa') ?>">Siswa</a></li>
                 </ul>
             </li>
             <li class="sub-menu">
@@ -36,6 +39,7 @@
                     <li id="mapel"><a href="<?= site_url('admin/mapel') ?>">Mata Pelajaran</a></li>
                     <li id="program_keahlian"><a href="<?= site_url('admin/program_keahlian') ?>">Program Keahlian</a></li>
                     <li id="bobot_nilai"><a href="<?= site_url('admin/bobot_nilai') ?>">Bobot Nilai</a></li>
+                    <li id="kelas"><a href="<?= site_url('admin/kelas') ?>">Kelas</a></li>
                 </ul>
             </li>
             <li class="sub-menu">

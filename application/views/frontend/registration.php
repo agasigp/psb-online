@@ -19,7 +19,7 @@
                 {
                     $jurusan[$value->id] = $value->program_keahlian;
                 }
-                echo form_dropdown('program_keahlian', $jurusan, null, 'class="form-control" id="program-keahlian required"');
+                echo form_dropdown('program_keahlian', $jurusan, null, 'class="form-control" id="program-keahlian"');
                 ?>
             </div>
         </div>
@@ -32,7 +32,54 @@
                 {
                     $sekolah[$value->id] = $value->nama;
                 }
-                echo form_dropdown('sekolah', $sekolah, null, 'class="form-control" id="sekolah required"');
+                echo form_dropdown('sekolah', $sekolah, null, 'class="form-control" id="sekolah" required');
+                ?>
+            </div>
+        </div>
+        <div class="form-group collapse" id="sekolah_lain">
+            <?= form_label('Asal Sekolah (*)', 'ttl', array('class' => 'col-sm-2 control-label')); ?>
+            <div class="col-sm-3">
+                <?=
+                form_input(array(
+                    'name' => 'asal_sekolah',
+                    'required' => null,
+                    'placeholder' => 'Sekolah Asal',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
+            <div class="col-sm-2">
+                <?=
+                form_input(array(
+                    'name' => 'npsn',
+                    'placeholder' => 'NPSN',
+                    'required' => null,
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
+            <div class="col-sm-3">
+                <?=
+                form_input(array(
+                    'name' => 'alamat_sekolah',
+                    'placeholder' => 'Alamat Sekolah',
+                    'required' => null,
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
+            <div class="col-sm-2">
+                <?=
+                form_input(array(
+                    'name' => 'status_sekolah',
+                    'placeholder' => 'Status',
+                    'required' => null,
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
                 ?>
             </div>
         </div>
@@ -45,7 +92,8 @@
                     'id' => 'nama-siswa',
                     'required' => null,
                     'placeholder' => 'Nama Lengkap',
-                    'class' => 'form-control')
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
                 );
                 ?>
             </div>
@@ -59,7 +107,8 @@
                     'id' => 'nisn',
                     'required' => null,
                     'placeholder' => 'NISN',
-                    'class' => 'form-control')
+                    'class' => 'form-control',
+                    'data-validation' => 'number')
                 );
                 ?>
             </div>
@@ -73,7 +122,8 @@
                     'id' => 'ttl',
                     'required' => null,
                     'placeholder' => 'Tempat Lahir',
-                    'class' => 'form-control')
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
                 );
                 ?>
             </div>
@@ -122,7 +172,8 @@
                     'id' => 'alamat-lengkap',
                     'required' => null,
                     'placeholder' => 'Alamat Lengkap',
-                    'class' => 'form-control')
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
                 );
                 ?>
             </div>
@@ -136,7 +187,8 @@
                     'id' => 'alamat-lengkap-jogja',
                     'required' => null,
                     'placeholder' => 'Alamat Lengkap di Jogja',
-                    'class' => 'form-control')
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
                 );
                 ?>
             </div>
@@ -150,7 +202,8 @@
                     'id' => 'no_telp',
                     'required' => null,
                     'placeholder' => 'No. telepon',
-                    'class' => 'form-control')
+                    'class' => 'form-control',
+                    'data-validation' => 'number')
                 );
                 ?>
             </div>
@@ -166,7 +219,8 @@
                     'name' => 'ayah',
                     'required' => null,
                     'placeholder' => 'Nama Lengkap Ayah',
-                    'class' => 'form-control')
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
                 );
                 ?>
             </div>
@@ -176,7 +230,8 @@
                     'name' => 'ibu',
                     'required' => null,
                     'placeholder' => 'Nama Lengkap Ibu',
-                    'class' => 'form-control')
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
                 );
                 ?>
             </div>
@@ -190,7 +245,8 @@
                     'id' => 'alamat-ortu',
                     'required' => null,
                     'placeholder' => 'Alamat Lengkap',
-                    'class' => 'form-control')
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
                 );
                 ?>
             </div>
@@ -220,7 +276,8 @@
                     'id' => 'wali',
                     'required' => null,
                     'placeholder' => 'Nama Wali',
-                    'class' => 'form-control')
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
                 );
                 ?>
             </div>
@@ -247,7 +304,8 @@
                     'id' => 'alamat-lengkap-wali',
                     'required' => null,
                     'placeholder' => 'Alamat Lengkap Wali',
-                    'class' => 'form-control')
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
                 );
                 ?>
             </div>
@@ -261,7 +319,8 @@
                     'id' => 'no-telp-wali',
                     'required' => null,
                     'placeholder' => 'No. telepon',
-                    'class' => 'form-control')
+                    'class' => 'form-control',
+                    'data-validation' => 'number')
                 );
                 ?>
             </div>
@@ -287,7 +346,10 @@
                             'id' => 'bhs-indo',
                             'required' => null,
                             'placeholder' => 'Bahasa Indonesia',
-                            'class' => 'form-control')
+                            'class' => 'form-control',
+                            'data-validation' => 'number',
+                            'data-validation-allowing' => 'range[0;100],float',
+                            'data-validation-decimal-separator' => ',')
                         );
                         echo $form_label;
                         break;
@@ -301,7 +363,10 @@
                             'id' => 'bhs-inggris',
                             'required' => null,
                             'placeholder' => 'Bahasa Inggris',
-                            'class' => 'form-control')
+                            'class' => 'form-control',
+                            'data-validation' => 'number',
+                            'data-validation-allowing' => 'range[0;100],float',
+                            'data-validation-decimal-separator' => ',')
                         );
                         echo $form_label;
                         break;
@@ -315,7 +380,10 @@
                             'id' => 'matematika',
                             'required' => null,
                             'placeholder' => 'Matematika',
-                            'class' => 'form-control')
+                            'class' => 'form-control',
+                            'data-validation' => 'number',
+                            'data-validation-allowing' => 'range[0;100],float',
+                            'data-validation-decimal-separator' => ',')
                         );
                         echo $form_label;
                         break;
@@ -329,7 +397,10 @@
                             'id' => 'ipa',
                             'required' => null,
                             'placeholder' => 'Ilmu Pengetahuan Alam',
-                            'class' => 'form-control')
+                            'class' => 'form-control',
+                            'data-validation' => 'number',
+                            'data-validation-allowing' => 'range[0;100],float',
+                            'data-validation-decimal-separator' => ',')
                         );
                         echo $form_label;
                         break;

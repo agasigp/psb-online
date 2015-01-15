@@ -29,7 +29,8 @@ class Registration extends CI_Controller {
             'pekerjaans' => $this->pekerjaan_model->get_all_pekerjaan(),
             'sekolahs' => $this->sekolah_model->get_all_sekolah(),
             'mapels' => $this->mapel_model->get_all_mapel(),
-            'view' => 'frontend/registration'
+            'view' => 'frontend/registration',
+            'js' => 'frontend/registration_js'
         );
 
         $this->load->view('template', $data);
@@ -60,7 +61,7 @@ class Registration extends CI_Controller {
                 break;
         }
 
-        $data1 = array(
+        $data = array(
             'siswa' => array(
                 'program_keahlian_id' => $this->input->post('program_keahlian'),
                 'no_pendaftaran' => $no_pendaftaran,
@@ -98,22 +99,39 @@ class Registration extends CI_Controller {
             )
         );
 
-        $this->registration_model->save_registration($data1);
+        if ($this->input->post('sekolah') == 4)
+        {
+            $data['siswa']['sekolah_asal'] = $this->input->post('asal_sekolah');
+            $data['siswa']['npsn'] = $this->input->post('npsn');
+            $data['siswa']['sekolah_alamat'] = $this->input->post('alamat_sekolah');
+            $data['siswa']['sekolah_status'] = $this->input->post('status_sekolah');
+        }
+
+        $this->registration_model->save_registration($data);
         $this->session->set_flashdata('no_pendaftaran', $no_pendaftaran);
-        $this->session->set_flashdata('info', '<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Data saved!</strong></div>');
         
+        $this->session->set_flashdata('info', '<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Data saved!</strong></div>');
+
         redirect('registration/show_success_registration');
     }
 
     public function show_success_registration()
     {
+        if ($this->session->flashdata('no_pendaftaran') == FALSE)
+        {
+            redirect('registration');
+        }
+
+        $this->load->model(array('bobot_nilai_model'));
         $no_pendaftaran = $this->session->flashdata('no_pendaftaran');
         $siswa = $this->registration_model->get_calon_siswa_by_no_pendaftaran($no_pendaftaran);
+        $bobot_nilai = $this->bobot_nilai_model->get_bobot_nilai_by_program_keahlian($siswa->program_keahlian_id);
 //        print_r($siswa);exit;
         $data = array(
             'siswa' => $siswa,
             'un' => $this->registration_model->get_nilai_un_by_id($siswa->id),
             'prestasi' => $this->registration_model->get_prestasi_by_id($siswa->id),
+            'bobot' => $bobot_nilai,
             'view' => 'frontend/registration_success'
         );
 
@@ -122,9 +140,11 @@ class Registration extends CI_Controller {
 
     public function search_registration()
     {
+        $this->load->model(array('bobot_nilai_model'));
         $no_pendaftaran = $this->input->post('no_pendaftaran');
         $siswa = $this->registration_model->get_calon_siswa_by_no_pendaftaran($no_pendaftaran);
-
+        $bobot_nilai = $this->bobot_nilai_model->get_bobot_nilai_by_program_keahlian($siswa->program_keahlian_id);
+        
         if (empty($siswa))
         {
             $data = array(
@@ -138,30 +158,93 @@ class Registration extends CI_Controller {
                 'siswa' => $siswa,
                 'un' => $this->registration_model->get_nilai_un_by_id($siswa->id),
                 'prestasi' => $this->registration_model->get_prestasi_by_id($siswa->id),
+                'bobot' => $bobot_nilai,
                 'view' => 'frontend/registration_success'
             );
         }
-        
+
         $this->load->view('template', $data);
     }
 
     public function list_registration()
     {
-        $this->load->library(array('pagination'));
+//        $this->load->library(array('pagination'));
         $this->load->model(array('registration_model'));
-        $config['base_url'] = site_url('registration/list_registration');
-        $config['per_page'] = 10;
-        $config['total_rows'] = $this->registration_model->get_count_result();
-        $this->pagination->initialize($config);
-        
+//        $config['base_url'] = site_url('registration/list_registration');
+//        $config['per_page'] = 20;
+
+
+        if ($this->input->post('program_keahlian') == FALSE)
+        {
+            if ($this->session->userdata('program_keahlian') == FALSE)
+            {
+                $this->session->set_userdata('program_keahlian', 1);
+                $config['total_rows'] = $this->registration_model->get_count_calon_siswa(date("Y"));
+//                $this->pagination->initialize($config);
+                $registration = $this->registration_model->get_calon_siswa(date("Y"));
+            }
+            else
+            {
+//                $this->session->set_userdata('program_keahlian', $this->input->post('program_keahlian'));
+                $config['total_rows'] = $this->registration_model->get_count_calon_siswa(date("Y"), $this->session->userdata('program_keahlian'));
+//                $this->pagination->initialize($config);
+                $registration = $this->registration_model->get_calon_siswa(date("Y"), $this->session->userdata('program_keahlian'));
+            }
+        }
+        else
+        {
+            $this->session->set_userdata('program_keahlian', $this->input->post('program_keahlian'));
+            $config['total_rows'] = $this->registration_model->get_count_calon_siswa(date("Y"), $this->session->userdata('program_keahlian'));
+//            $this->pagination->initialize($config);
+            $registration = $this->registration_model->get_calon_siswa(date("Y"), $this->session->userdata('program_keahlian'));
+        }
+
         $data = array(
-            'registration' => $this->registration_model->get_result($config['per_page'], (int)$this->uri->segment('3')),
+            'registration' => $registration,
             'program_keahlian' => $this->program_keahlian_model->get_all_program_keahlian(),
-            'view' => 'frontend/registration_list'
+            'program_keahlian_id' => $this->session->userdata('program_keahlian'),
+            'view' => 'frontend/registration_list',
+            'js' => 'frontend/registration_list_js',
+            'css' => 'frontend/registration_list_css',
         );
 //        print_r($data);exit;
 
         $this->load->view('template', $data);
+    }
+
+    public function list_registration_json()
+    {
+        $length = (int) $this->input->post('length');
+        $tart = (int) $this->input->post('start');
+        $registration = $this->registration_model->get_calon_siswa("2014", $length, $tart);
+        $count_registration = $this->registration_model->get_count_calon_siswa("2014");
+
+        $reg = array();
+        foreach ($registration as $value)
+        {
+//            $data = array();
+            foreach ($value as $v)
+            {
+//                array_push($data, $v);
+            }
+            array_push($reg, $value);
+        }
+
+        if ($this->input->post('program_keahlian') == FALSE)
+        {
+            $json = array(
+                'draw' => (int) $this->input->post('draw'),
+                'recordsTotal' => $count_registration,
+                'recordsFiltered' => $count_registration,
+                'data' => $reg
+            );
+
+            $this->output->set_content_type('application/json')->set_output(json_encode($json));
+        }
+        else
+        {
+            $$data['registration'] = $this->registration_model->get_calon_siswa("2014", $length, $tart, $this->input->post('program_keahlian'));
+        }
     }
 
     function _format_no_pendaftaran($num)
@@ -179,7 +262,7 @@ class Registration extends CI_Controller {
                 break;
             default: $NoTrans = $num;
         }
-        
+
         return $NoTrans;
     }
 

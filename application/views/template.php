@@ -4,8 +4,8 @@
     <body>
         <div class="container">
             <?php
-                $this->load->view('header_menu');
-                $this->load->view('carousel');
+            $this->load->view('header_menu');
+            $this->load->view('carousel');
             ?>
             <div class="row">
                 <?php $this->load->view('panel') ?>
@@ -13,7 +13,7 @@
                     <?php $this->load->view($view) ?>
                 </div>
             </div>
-            <?php $this->load->view('footer')  ?>
+            <?php $this->load->view('footer') ?>
         </div>
 
         <?php $this->load->view('js') ?>

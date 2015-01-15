@@ -72,8 +72,8 @@ class Registration_model extends CI_Model {
     public function get_last_id()
     {
 
-//        $this->db->where('')
-        $query = $this->db->count_all($this->table_calon_siswa);
+        $this->db->where('YEAR(waktu_daftar)',date("Y"));
+        $query = $this->db->count_all_results($this->table_calon_siswa);
         return $query;
     }
 
@@ -88,6 +88,7 @@ class Registration_model extends CI_Model {
         $this->db->select('cs.id,
                 cs.nama ,
 		ag.agama,
+                pk.id AS program_keahlian_id,
 		pk.program_keahlian,
 		cs.no_pendaftaran,
 		cs.nisn,
@@ -99,6 +100,7 @@ class Registration_model extends CI_Model {
 		cs.no_telepon,
 		cs.ayah,
 		cs.ibu,
+                cs.sekolah_asal,
 		p1.pekerjaan AS pekerjaan_ayah,
 		p2.pekerjaan AS pekerjaan_ibu,
 		cs.alamat_ortu,
@@ -140,7 +142,7 @@ class Registration_model extends CI_Model {
         return $query->result();
     }
 
-    public function get_result($limit, $offset, $a = null)
+    public function get_calon_siswa($tahun, $program_keahlian = 1)
     {
         $sql = "SELECT
 		@id := cs.id AS id,
@@ -155,17 +157,18 @@ class Registration_model extends CI_Model {
 		(SELECT GROUP_CONCAT(un.nilai SEPARATOR ',') FROM nilai_un un WHERE un.calon_siswa_id = @id ORDER BY un.mata_pelajaran_id) AS nilai,
                 (SELECT GROUP_CONCAT(b.bobot SEPARATOR ',') FROM bobot b WHERE b.program_keahlian_id = @pk_id ORDER BY b.mata_pelajaran_id) AS bobot
                 FROM calon_siswa cs JOIN program_keahlian pk ON cs.program_keahlian_id = pk.id
-                JOIN sekolah sk ON cs.sekolah_id = sk.id 
-                LIMIT ? OFFSET ?";
+                JOIN sekolah sk ON cs.sekolah_id = sk.id
+                WHERE YEAR(cs.waktu_daftar) = ? AND cs.program_keahlian_id = ?";
         
-        $query = $this->db->query($sql, array($limit, $offset));
+        $query = $this->db->query($sql, array($tahun, $program_keahlian));
         return $query->result();
     }
 
-    public function get_count_result()
+    public function get_count_calon_siswa($tahun, $program_keahlian = 1)
     {
         $this->db->from('calon_siswa');
-//        $this->db->where('');
+        $this->db->where('YEAR(waktu_daftar)', $tahun);
+        $this->db->where('program_keahlian_id', $program_keahlian);
         $query = $this->db->count_all_results();
 
         return $query;

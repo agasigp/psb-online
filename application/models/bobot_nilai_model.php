@@ -11,7 +11,8 @@
  *
  * @author agasi
  */
-class Bobot_nilai_model extends CI_Model{
+class Bobot_nilai_model extends CI_Model {
+
     //put your code here
     private $table_name = "bobot";
 
@@ -24,7 +25,7 @@ class Bobot_nilai_model extends CI_Model{
         $this->db->order_by('pk.program_keahlian');
         $this->db->limit($limit, $offset);
         $query = $this->db->get();
-        
+
         return $query->result();
     }
 
@@ -45,9 +46,9 @@ class Bobot_nilai_model extends CI_Model{
         $data = array(
             'program_keahlian_id' => $program_keahlian,
             'mata_pelajaran_id' => $mapel,
-            'bobot' => $bobot           
+            'bobot' => $bobot
         );
-        
+
         $this->db->insert($this->table_name, $data);
     }
 
@@ -61,4 +62,12 @@ class Bobot_nilai_model extends CI_Model{
 
         $this->db->update($this->table_name, $data, array('id' => $id));
     }
+
+    public function get_bobot_nilai_by_program_keahlian($program_keahlian_id)
+    {
+        $this->db->order_by('mata_pelajaran_id', 'ASC');
+        $query = $this->db->get_where($this->table_name, array('program_keahlian_id' => $program_keahlian_id));
+        return $query->result();
+    }
+
 }

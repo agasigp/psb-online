@@ -7,6 +7,6 @@
 <script src="<?= base_url('resources/js/jquery.scrollTo.min.js') ?>"></script>
 <script src="<?= base_url('resources/js/jquery.nicescroll.js') ?>" type="text/javascript"></script>
 
-
 <!--common script for all pages-->
 <script src="<?= base_url('resources/js/common-scripts.js') ?>"></script>
+<?php if (isset($js)) $this->load->view($js); ?>
