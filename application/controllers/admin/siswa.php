@@ -36,7 +36,6 @@ class Siswa extends CI_Controller {
         if ($this->ion_auth->logged_in())
         {
             $this->load->model(array('registration_model'));
-            $config['total_rows'] = $this->registration_model->get_count_calon_siswa(date("Y"));
 
             $data = array(
                 'siswas' => $this->siswa_model->get_all_calon_siswa(date("Y")),
@@ -65,7 +64,7 @@ class Siswa extends CI_Controller {
             if ($count == 0)
             {
                 $data = array(
-                    'siswa' => $this->siswa_model->get_siswa_by_id($id),
+                    'siswa' => $this->siswa_model->get_calon_siswa_by_id($id),
                     'view' => 'admin/siswa/show_add_tes_kesehatan',
                     'action' => 'admin/siswa/do_add_tes_kesehatan',
                     'active' => array(
@@ -79,7 +78,7 @@ class Siswa extends CI_Controller {
             else
             {
                 $data = array(
-                    'siswa' => $this->siswa_model->get_siswa_by_id($id),
+                    'siswa' => $this->siswa_model->get_calon_siswa_by_id($id),
                     'tes_kesehatan' => $this->siswa_model->get_tes_kesehatan($id),
                     'view' => 'admin/siswa/show_add_tes_kesehatan',
                     'action' => 'admin/siswa/do_update_tes_kesehatan',
@@ -131,7 +130,9 @@ class Siswa extends CI_Controller {
                     'menu' => 'psb',
                     'submenu' => 'siswa'
                 ),
-                'view' => 'admin/siswa/show_siswa'
+                'view' => 'admin/siswa/show_siswa',
+                'js' => 'admin/siswa/siswa_list_js',
+                'css' => 'frontend/registration_list_css'
             );
 //            print_r($data['siswas']);exit;
             $this->load->view('admin/template', $data);

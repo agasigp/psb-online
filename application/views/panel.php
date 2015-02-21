@@ -21,17 +21,4 @@
             <?= form_close(); ?>
         </div>
     </div>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Statistik Pendaftar</h3>
-        </div>
-        <div class="panel-body">
-            <ul>
-                <li>Sudah Melengkapi Berkas: <a href="#">327</a></li>
-                <li>Belum Melengkapi Berkas: <a href="#">327</a></li>
-                <li>Total Pendaftar: <a href="#">327</a></li>
-            </ul>
-        </div>
-    </div>
 </div>

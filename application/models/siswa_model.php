@@ -25,13 +25,12 @@ class Siswa_model extends CI_Model {
 		pk.program_keahlian,
 		cs.no_pendaftaran,
 		cs.nisn,
-		sk.nama AS sekolah,
+		cs.sekolah_asal,
 		cs.waktu_daftar,
                 cs.status,
 		(SELECT GROUP_CONCAT(un.nilai SEPARATOR ',') FROM nilai_un un WHERE un.calon_siswa_id = @id ORDER BY un.mata_pelajaran_id) AS nilai,
                 (SELECT GROUP_CONCAT(b.bobot SEPARATOR ',') FROM bobot b WHERE b.program_keahlian_id = @pk_id ORDER BY b.mata_pelajaran_id) AS bobot
                 FROM calon_siswa cs JOIN program_keahlian pk ON cs.program_keahlian_id = pk.id
-                JOIN sekolah sk ON cs.sekolah_id = sk.id
                 WHERE YEAR(cs.waktu_daftar) = ?
                 LIMIT ? OFFSET ?";
 
@@ -49,13 +48,12 @@ class Siswa_model extends CI_Model {
 		pk.program_keahlian,
 		cs.no_pendaftaran,
 		cs.nisn,
-		sk.nama AS sekolah,
+		cs.sekolah_asal,
 		cs.waktu_daftar,
                 cs.status,
 		(SELECT GROUP_CONCAT(un.nilai SEPARATOR ',') FROM nilai_un un WHERE un.calon_siswa_id = @id ORDER BY un.mata_pelajaran_id) AS nilai,
                 (SELECT GROUP_CONCAT(b.bobot SEPARATOR ',') FROM bobot b WHERE b.program_keahlian_id = @pk_id ORDER BY b.mata_pelajaran_id) AS bobot
                 FROM calon_siswa cs JOIN program_keahlian pk ON cs.program_keahlian_id = pk.id
-                JOIN sekolah sk ON cs.sekolah_id = sk.id
                 WHERE YEAR(cs.waktu_daftar) = ?";
 
         $query = $this->db->query($sql, array($tahun));
@@ -64,10 +62,11 @@ class Siswa_model extends CI_Model {
 
     public function get_all_siswa()
     {
-        $this->db->select('s.id, s.nama, k.kelas, pk.program_keahlian');
+        $this->db->select('s.id, cs.nama, k.kelas, pk.program_keahlian');
         $this->db->from('siswa s');
-        $this->db->join('program_keahlian pk', 's.program_keahlian_id = pk.id');
         $this->db->join('kelas k', 's.kelas_id = k.id');
+        $this->db->join('calon_siswa cs', 's.calon_siswa_id = cs.id');
+        $this->db->join('program_keahlian pk', 'cs.program_keahlian_id = pk.id');
         $query = $this->db->get();
         return $query->result();
     }
@@ -89,33 +88,8 @@ class Siswa_model extends CI_Model {
     public function save_siswa($kelas, $siswa)
     {
         $data = array(
-            'program_keahlian_id' => $siswa->program_keahlian_id,
-            'no_pendaftaran' => $siswa->no_pendaftaran,
-            'kelas_id' => $kelas,
-            'nama' => $siswa->nama,
-            'nisn' => $siswa->nisn,
-            'tempat_lahir' => $siswa->tempat_lahir,
-            'tgl_lahir' => $siswa->tgl_lahir,
-            'jenis_kelamin' => $siswa->jenis_kelamin,
-            'agama_id' => $siswa->agama_id,
-            'alamat' => $siswa->alamat_jogja,
-            'alamat_jogja' => $siswa->alamat_jogja,
-            'no_telepon' => $siswa->no_telepon,
-            'ayah' => $siswa->ayah,
-            'ibu' => $siswa->ibu,
-            'alamat_ortu' => $siswa->alamat_ortu,
-            'pekerjaan_ayah' => $siswa->pekerjaan_ayah,
-            'pekerjaan_ibu' => $siswa->pekerjaan_ibu,
-            'no_telepon_ortu' => $siswa->no_telepon_ortu,
-            'wali' => $siswa->wali,
-            'pekerjaan_wali' => $siswa->pekerjaan_wali,
-            'alamat_wali' => $siswa->alamat_wali,
-            'no_telepon_wali' => $siswa->no_telepon_wali,
-            'sekolah_id' => $siswa->sekolah_id,
-            'sekolah_asal' => $siswa->sekolah_asal,
-            'npsn' => $siswa->npsn,
-            'sekolah_status' => $siswa->sekolah_status,
-            'sekolah_alamat' => $siswa->sekolah_alamat
+            'calon_siswa_id' => $siswa->id,
+            'kelas_id' => $kelas
         );
         
         $this->db->insert('siswa', $data);
@@ -154,7 +128,7 @@ class Siswa_model extends CI_Model {
     {
         $this->db->select('cs.id,
                 cs.nama ,
-		ag.agama,
+		cs.agama,
                 pk.id AS program_keahlian_id,
 		pk.program_keahlian,
 		cs.no_pendaftaran,
@@ -168,23 +142,17 @@ class Siswa_model extends CI_Model {
 		cs.ayah,
 		cs.ibu,
                 cs.sekolah_asal,
-		p1.pekerjaan AS pekerjaan_ayah,
-		p2.pekerjaan AS pekerjaan_ibu,
+		cs.pekerjaan_ayah,
+		cs.pekerjaan_ibu,
 		cs.alamat_ortu,
 		cs.no_telepon_ortu,
 		cs.wali,
-		p3.pekerjaan AS pekerjaan_wali,
+		cs.pekerjaan_wali,
 		cs.alamat_wali,
 		cs.no_telepon_wali,
-		sk.nama AS sekolah,
 		cs.waktu_daftar');
         $this->db->from('calon_siswa cs');
-        $this->db->join('agama ag', 'cs.agama_id = ag.id');
-        $this->db->join('pekerjaan p1', 'cs.pekerjaan_ayah');
-        $this->db->join('pekerjaan p2', 'cs.pekerjaan_ibu');
-        $this->db->join('pekerjaan p3', 'cs.pekerjaan_wali');
         $this->db->join('program_keahlian pk', 'cs.program_keahlian_id = pk.id');
-        $this->db->join('sekolah sk', 'cs.sekolah_id = sk.id');
         $this->db->where('cs.id', $id);
         $query = $this->db->get();
 //        $query = $this->db->get_where($this->table_calon_siswa, array('no_pendaftaran' => $no_daftar));

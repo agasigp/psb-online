@@ -2,7 +2,7 @@
 <script src="<?= base_url('resources/js/dataTables.bootstrap.js'); ?>"></script>
 <script>
     $(document).ready(function() {
-        $('#registrationlist').dataTable({
+        $('#registrationlist').DataTable({
                 fnDrawCallback: function (oSettings) {
                 /* Need to redo the counters if filtered or sorted */
                 if (oSettings.bSorted || oSettings.bFiltered) {

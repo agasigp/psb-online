@@ -32,7 +32,7 @@
                     <?php
 //                    if ()
                     ?>
-                    <p class="form-control-static"><?= $siswa->sekolah; ?></p>
+                    <p class="form-control-static"><?= $siswa->sekolah_asal; ?></p>
                 </div>
             </div>
             <div class="form-group">

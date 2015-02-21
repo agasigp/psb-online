@@ -4,14 +4,12 @@
         <ul class="sidebar-menu" id="nav-accordion">
 
             <p class="centered"><a href="profile.html"><img src="<?= base_url('resources/img/ui-sam.jpg') ?>" class="img-circle" width="60"></a></p>
-            <h5 class="centered">Marcel Newman</h5>
-
-            <li class="mt">
-                <a href="index.html">
-                    <i class="fa fa-dashboard"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
+            <h5 class="centered">
+                <?php
+                $user = $this->ion_auth->user()->row();
+                echo $user->username;
+                ?>
+            </h5>
 
             <li class="sub-menu">
                 <a id="psb" href="javascript:;" >
@@ -33,45 +31,24 @@
                 <ul class="sub">
                     <li id="user"><a href="<?= site_url('admin/user/show_user') ?>">User</a></li>
                     <li id="group"><a href="<?= site_url('admin/group'); ?>">Group</a></li>
-                    <li id="sekolah"><a href="<?= site_url('admin/sekolah') ?>">Sekolah</a></li>
-                    <li id="agama"><a href="<?= site_url('admin/agama') ?>">Agama</a></li>
-                    <li id="pekerjaan"><a href="<?= site_url('admin/pekerjaan') ?>">Pekerjaan</a></li>
                     <li id="mapel"><a href="<?= site_url('admin/mapel') ?>">Mata Pelajaran</a></li>
                     <li id="program_keahlian"><a href="<?= site_url('admin/program_keahlian') ?>">Program Keahlian</a></li>
                     <li id="bobot_nilai"><a href="<?= site_url('admin/bobot_nilai') ?>">Bobot Nilai</a></li>
                     <li id="kelas"><a href="<?= site_url('admin/kelas') ?>">Kelas</a></li>
+                    <li id="info"><a href="<?= site_url('admin/info') ?>">Info</a></li>
                 </ul>
             </li>
             <li class="sub-menu">
-                <a href="javascript:;" >
-                    <i class="fa fa-tasks"></i>
-                    <span>Forms</span>
+                <a id="master" href="javascript:;" >
+                    <i class="fa fa-book"></i>
+                    <span>Laporan</span>
                 </a>
                 <ul class="sub">
-                    <li><a  href="form_component.html">Form Components</a></li>
+                    <li id="laporan1"><a href="<?= site_url('admin/laporan') ?>">Laporan 1</a></li>
+                    <li id="laporan2"><a href="<?= site_url('admin/laporan') ?>">Laporan 2</a></li>
+                    <li id="laporan3"><a href="<?= site_url('admin/laporan') ?>">Laporan 3</a></li>
                 </ul>
             </li>
-            <li class="sub-menu">
-                <a href="javascript:;" >
-                    <i class="fa fa-th"></i>
-                    <span>Data Tables</span>
-                </a>
-                <ul class="sub">
-                    <li><a  href="basic_table.html">Basic Table</a></li>
-                    <li><a  href="responsive_table.html">Responsive Table</a></li>
-                </ul>
-            </li>
-            <li class="sub-menu">
-                <a href="javascript:;" >
-                    <i class=" fa fa-bar-chart-o"></i>
-                    <span>Charts</span>
-                </a>
-                <ul class="sub">
-                    <li><a  href="morris.html">Morris</a></li>
-                    <li><a  href="chartjs.html">Chartjs</a></li>
-                </ul>
-            </li>
-
         </ul>
         <!-- sidebar menu end-->
     </div>

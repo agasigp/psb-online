@@ -2,7 +2,6 @@
 <ul class="nav nav-tabs" role="tablist">
     <li class="active"><a href="#siswa" role="tab" data-toggle="tab">Biodata Siswa</a></li>
     <li><a href="#ortu" role="tab" data-toggle="tab">Biodata Orang Tua/Wali</a></li>
-    <!--    <li><a href="#sekolah" role="tab" data-toggle="tab">Asal Sekolah</a></li>-->
     <li><a href="#un" role="tab" data-toggle="tab">Nilai UN SMP/MTs</a></li>
     <li><a href="#prestasi" role="tab" data-toggle="tab">Prestasi</a></li>
 </ul>
@@ -23,21 +22,8 @@
                 ?>
             </div>
         </div>
-        <div class="form-group">
-            <?= form_label('Asal Sekolah', 'sekolah', array('class' => 'col-sm-2 control-label')) ?>
-            <div class="col-sm-4">
-                <?php
-                $sekolah = array();
-                foreach ($sekolahs as $value)
-                {
-                    $sekolah[$value->id] = $value->nama;
-                }
-                echo form_dropdown('sekolah', $sekolah, null, 'class="form-control" id="sekolah" required');
-                ?>
-            </div>
-        </div>
-        <div class="form-group collapse" id="sekolah_lain">
-            <?= form_label('Asal Sekolah (*)', 'ttl', array('class' => 'col-sm-2 control-label')); ?>
+        <div class="form-group" id="sekolah_lain">
+            <?= form_label('Asal Sekolah', 'ttl', array('class' => 'col-sm-2 control-label')); ?>
             <div class="col-sm-3">
                 <?=
                 form_input(array(
@@ -153,19 +139,19 @@
         <div class="form-group">
             <?= form_label('Agama', 'agama', array('class' => 'col-sm-2 control-label')) ?>
             <div class="col-sm-4">
-                <?php
-                $agama = array();
-                foreach ($agamas as $value)
-                {
-                    $agama[$value->id] = $value->agama;
-                }
-                echo form_dropdown('agama', $agama, null, 'class="form-control" id="agama required"');
+                <?=
+                form_input(array(
+                    'name' => 'agama',
+                    'value' => 'Islam',
+                    'disabled' => 'disabled',
+                    'class' => 'form-control')
+                );
                 ?>
             </div>
         </div>
         <div class="form-group">
             <?= form_label('Alamat Lengkap', 'alamat-lengkap', array('class' => 'col-sm-2 control-label')); ?>
-            <div class="col-sm-10">
+            <div class="col-sm-3">
                 <?=
                 form_input(array(
                     'name' => 'alamat',
@@ -177,22 +163,112 @@
                 );
                 ?>
             </div>
-        </div>
-        <div class="form-group">
-            <?= form_label('Alamat Lengkap di Jogja', 'alamat-lengkap-jogja', array('class' => 'col-sm-2 control-label')); ?>
-            <div class="col-sm-10">
+            <div class="col-sm-3">
                 <?=
                 form_input(array(
-                    'name' => 'alamat_jogja',
-                    'id' => 'alamat-lengkap-jogja',
+                    'name' => 'alamat_kelurahan',
+                    'id' => 'alamat-kelurahan',
                     'required' => null,
-                    'placeholder' => 'Alamat Lengkap di Jogja',
+                    'placeholder' => 'Alamat Kelurahan',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
+            <div class="col-sm-3">
+                <?=
+                form_input(array(
+                    'name' => 'alamat_kecamatan',
+                    'id' => 'alamat-kecamatan',
+                    'required' => null,
+                    'placeholder' => 'Alamat Kecamatan',
                     'class' => 'form-control',
                     'data-validation' => 'required')
                 );
                 ?>
             </div>
         </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-5">
+                <?=
+                form_input(array(
+                    'name' => 'alamat_kabupaten',
+                    'id' => 'alamat-kabupaten',
+                    'required' => null,
+                    'placeholder' => 'Alamat Kabpuaten/Kota',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
+            <div class="col-sm-5">
+                <?=
+                form_input(array(
+                    'name' => 'alamat_provinsi',
+                    'id' => 'alamat-provinsi',
+                    'required' => null,
+                    'placeholder' => 'Alamat Provinsi',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <?= form_label('Alamat Lengkap Jogja', 'alamat-lengkap-jogja', array('class' => 'col-sm-2 control-label')); ?>
+            <div class="col-sm-3">
+                <?=
+                form_input(array(
+                    'name' => 'alamat_jogja',
+                    'id' => 'alamat-lengkap-jogja',
+                    'required' => null,
+                    'placeholder' => 'Alamat Lengkap Jogja',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
+            <div class="col-sm-3">
+                <?=
+                form_input(array(
+                    'name' => 'alamat_jogja_kelurahan',
+                    'id' => 'alamat-kelurahan',
+                    'required' => null,
+                    'placeholder' => 'Alamat Kelurahan',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
+            <div class="col-sm-3">
+                <?=
+                form_input(array(
+                    'name' => 'alamat_jogja_kecamatan',
+                    'id' => 'alamat-kecamatan',
+                    'required' => null,
+                    'placeholder' => 'Alamat Kecamatan',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-5">
+                <?=
+                form_input(array(
+                    'name' => 'alamat_jogja_kabupaten',
+                    'id' => 'alamat-kabupaten',
+                    'required' => null,
+                    'placeholder' => 'Alamat Kabpuaten/Kota',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
+        </div>
+
         <div class="form-group">
             <?= form_label('No. Telepon', 'no-telp', array('class' => 'col-sm-2 control-label')); ?>
             <div class="col-sm-3">
@@ -238,7 +314,7 @@
         </div>
         <div class="form-group">
             <?= form_label('Alamat Lengkap', 'alamat-ortu', array('class' => 'col-sm-2 control-label')); ?>
-            <div class="col-sm-10">
+            <div class="col-sm-3">
                 <?=
                 form_input(array(
                     'name' => 'alamat_ortu',
@@ -250,26 +326,87 @@
                 );
                 ?>
             </div>
+            <div class="col-sm-3">
+                <?=
+                form_input(array(
+                    'name' => 'alamat_kelurahan_ortu',
+                    'id' => 'alamat-kelurahan',
+                    'required' => null,
+                    'placeholder' => 'Alamat Kelurahan',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
+            <div class="col-sm-3">
+                <?=
+                form_input(array(
+                    'name' => 'alamat_kecamatan_ortu',
+                    'id' => 'alamat-kecamatan',
+                    'required' => null,
+                    'placeholder' => 'Alamat Kecamatan',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-5">
+                <?=
+                form_input(array(
+                    'name' => 'alamat_kabupaten_ortu',
+                    'id' => 'alamat-kabupaten',
+                    'required' => null,
+                    'placeholder' => 'Alamat Kabpuaten/Kota',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
+            <div class="col-sm-5">
+                <?=
+                form_input(array(
+                    'name' => 'alamat_provinsi_ortu',
+                    'id' => 'alamat-provinsi',
+                    'required' => null,
+                    'placeholder' => 'Alamat Provinsi',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
         </div>
         <div class="form-group">
             <?= form_label('Pekerjaan', null, array('class' => 'col-sm-2 control-label')) ?>
             <div class="col-sm-3">
-                <?php
-                $pekerjaan_ayah = array('0' => '-- Pekerjaan Ayah --');
-                $pekerjaan_ibu = array('0' => '-- Pekerjaan Ibu --');
-                foreach ($pekerjaans as $value)
-                {
-                    $pekerjaan_ayah[$value->id] = $value->pekerjaan;
-                    $pekerjaan_ibu[$value->id] = $value->pekerjaan;
-                }
-                echo form_dropdown('pekerjaan_ayah', $pekerjaan_ayah, null, 'class="form-control required"');
+                <?=
+                form_input(array(
+                    'name' => 'pekerjaan_ayah',
+                    'id' => 'pekerjaan-ayah',
+                    'required' => null,
+                    'placeholder' => 'Pekerjaan Ayah',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
                 ?>
             </div>
-            <div class="col-sm-3"><?= form_dropdown('pekerjaan_ibu', $pekerjaan_ibu, null, 'class="form-control"'); ?></div>
+            <div class="col-sm-3">
+                <?=
+                form_input(array(
+                    'name' => 'pekerjaan_ibu',
+                    'id' => 'pekerjaan-ibu',
+                    'required' => null,
+                    'placeholder' => 'Pekerjaan Ibu',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
         </div>
         <div class="form-group">
             <?= form_label('Nama Wali', 'wali', array('class' => 'col-sm-2 control-label')); ?>
-            <div class="col-sm-10">
+            <div class="col-sm-3">
                 <?=
                 form_input(array(
                     'name' => 'wali',
@@ -281,29 +418,78 @@
                 );
                 ?>
             </div>
-        </div>
-        <div class="form-group">
-            <?= form_label('Pekerjaan', null, array('class' => 'col-sm-2 control-label')) ?>
             <div class="col-sm-3">
-                <?php
-                $pekerjaan = array('0' => '-- Pekerjaan Wali --');
-                foreach ($pekerjaans as $value)
-                {
-                    $pekerjaan[$value->id] = $value->pekerjaan;
-                }
-                echo form_dropdown('pekerjaan_wali', $pekerjaan, null, 'class="form-control"');
+                <?=
+                form_input(array(
+                    'name' => 'pekerjaan_wali',
+                    'id' => 'pekerjaan-wali',
+                    'required' => null,
+                    'placeholder' => 'Pekerjaan Wali',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
                 ?>
             </div>
         </div>
         <div class="form-group">
             <?= form_label('Alamat Lengkap Wali', 'alamat-lengkap-wali', array('class' => 'col-sm-2 control-label')); ?>
-            <div class="col-sm-10">
+            <div class="col-sm-3">
                 <?=
                 form_input(array(
                     'name' => 'alamat_wali',
                     'id' => 'alamat-lengkap-wali',
                     'required' => null,
                     'placeholder' => 'Alamat Lengkap Wali',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
+            <div class="col-sm-3">
+                <?=
+                form_input(array(
+                    'name' => 'alamat_kelurahan_wali',
+                    'id' => 'alamat-kelurahan-wali',
+                    'required' => null,
+                    'placeholder' => 'Alamat Kelurahan',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
+            <div class="col-sm-3">
+                <?=
+                form_input(array(
+                    'name' => 'alamat_kecamatan_wali',
+                    'id' => 'alamat-kecamatan-wali',
+                    'required' => null,
+                    'placeholder' => 'Alamat Kecamatan',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-5">
+                <?=
+                form_input(array(
+                    'name' => 'alamat_kabupaten_wali',
+                    'id' => 'alamat-kabupaten-wali',
+                    'required' => null,
+                    'placeholder' => 'Alamat Kabpuaten/Kota',
+                    'class' => 'form-control',
+                    'data-validation' => 'required')
+                );
+                ?>
+            </div>
+            <div class="col-sm-5">
+                <?=
+                form_input(array(
+                    'name' => 'alamat_provinsi_wali',
+                    'id' => 'alamat-provinsi-wali',
+                    'required' => null,
+                    'placeholder' => 'Alamat Provinsi',
                     'class' => 'form-control',
                     'data-validation' => 'required')
                 );
@@ -424,7 +610,6 @@
                     'name' => 'prestasi1',
                     'id' => 'prestasi1',
                     'placeholder' => 'Prestasi 1',
-                    'required' => null,
                     'class' => 'form-control')
                 );
                 ?>
@@ -470,7 +655,23 @@
             </div>
         </div>
     </div>
+    <div class="form-group">
+        <?= form_label('Captcha', 'captcha', array('class' => 'col-sm-2 control-label')); ?>
+        <div class="col-sm-2">
+            <?= $capdata['image']; ?>     
+            <?=
+            form_input(array(
+                'name' => 'captcha',
+                'id' => 'captcha',
+                'class' => 'form-control',
+                'required' => null)
+            );
+            ?>
+        </div>
+        <div class="col-sm-7">
 
+        </div>
+    </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <?= form_submit('save', 'Simpan', 'class="btn btn-default"') ?>

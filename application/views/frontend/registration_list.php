@@ -18,11 +18,14 @@
     <thead>
         <tr>
             <th rowspan="2">No</th>
+            
             <th rowspan="2">Nama</th>
             <th rowspan="2">No. Pendaftaran</th>
             <th rowspan="2">Asal Sekolah</th>
             <th colspan="4">Nilai</th>
             <th rowspan="2">Total Skor Nilai</th>
+            <th rowspan="2">Waktu Daftar</th>
+            
         </tr>
         <tr>
             <th>Bahasa Indonesia</th>
@@ -32,35 +35,35 @@
         </tr>
     </thead>
     <tbody>
-        <?php $no = (int) $this->uri->segment('3') + 1; ?>
+        <?php // print_r($registration);exit; ?>
         <?php foreach ($registration as $v): ?>
             <tr>
                 <td></td>
                 <td><?= $v->nama ?></td>
                 <td><?= $v->no_pendaftaran ?></td>
-                <td><?= $v->sekolah ?></td>
+                <td><?= $v->sekolah_asal ?></td>
                 <?php
                 $nilai_un = explode(",", $v->nilai);
                 $bobot = explode(",", $v->bobot);
                 $sum = 0;
 //                print_r($bobot);exit;
-                foreach ($nilai_un as $k => $v)
+                foreach ($nilai_un as $key => $val)
                 {
                     if (empty($bobot))
                     {
-                        echo "<td>".$v."</td>";
+                        echo "<td>".$val."</td>";
                     }
                     else
                     {
-                        $sum = $sum + ($v * $bobot[$k]);
-                        echo "<td>".$v." (x".$bobot[$k].")</td>";
+                        $sum = $sum + ($val * $bobot[$key]);
+                        echo "<td>".$val." (x".$bobot[$key].")</td>";
                     }
                 }
 //
                 ?>
                 <td><?= $sum; ?></td>
+                <td><?= $v->waktu_daftar ?></td>
             </tr>
-            <?php $no++; ?>
         <?php endforeach; ?>
     </tbody>
 </table>

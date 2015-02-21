@@ -72,7 +72,7 @@ class Registration_model extends CI_Model {
     public function get_last_id()
     {
 
-        $this->db->where('YEAR(waktu_daftar)',date("Y"));
+        $this->db->where('YEAR(waktu_daftar)', date("Y"));
         $query = $this->db->count_all_results($this->table_calon_siswa);
         return $query;
     }
@@ -87,7 +87,7 @@ class Registration_model extends CI_Model {
     {
         $this->db->select('cs.id,
                 cs.nama ,
-		ag.agama,
+		cs.agama,
                 pk.id AS program_keahlian_id,
 		pk.program_keahlian,
 		cs.no_pendaftaran,
@@ -101,23 +101,18 @@ class Registration_model extends CI_Model {
 		cs.ayah,
 		cs.ibu,
                 cs.sekolah_asal,
-		p1.pekerjaan AS pekerjaan_ayah,
-		p2.pekerjaan AS pekerjaan_ibu,
+		cs.pekerjaan_ayah,
+		cs.pekerjaan_ibu,
 		cs.alamat_ortu,
 		cs.no_telepon_ortu,
 		cs.wali,
-		p3.pekerjaan AS pekerjaan_wali,
+		cs.pekerjaan_wali,
 		cs.alamat_wali,
 		cs.no_telepon_wali,
-		sk.nama AS sekolah,
+		cs.sekolah_asal,
 		cs.waktu_daftar');
         $this->db->from('calon_siswa cs');
-        $this->db->join('agama ag', 'cs.agama_id = ag.id');
-        $this->db->join('pekerjaan p1', 'cs.pekerjaan_ayah');
-        $this->db->join('pekerjaan p2', 'cs.pekerjaan_ibu');
-        $this->db->join('pekerjaan p3', 'cs.pekerjaan_wali');
         $this->db->join('program_keahlian pk', 'cs.program_keahlian_id = pk.id');
-        $this->db->join('sekolah sk', 'cs.sekolah_id = sk.id');
         $this->db->where('cs.no_pendaftaran', $no_daftar);
         $query = $this->db->get();
 //        $query = $this->db->get_where($this->table_calon_siswa, array('no_pendaftaran' => $no_daftar));
@@ -152,14 +147,13 @@ class Registration_model extends CI_Model {
 		pk.program_keahlian,
 		cs.no_pendaftaran,
 		cs.nisn,
-		sk.nama AS sekolah,
+		cs.sekolah_asal,
 		cs.waktu_daftar,
 		(SELECT GROUP_CONCAT(un.nilai SEPARATOR ',') FROM nilai_un un WHERE un.calon_siswa_id = @id ORDER BY un.mata_pelajaran_id) AS nilai,
                 (SELECT GROUP_CONCAT(b.bobot SEPARATOR ',') FROM bobot b WHERE b.program_keahlian_id = @pk_id ORDER BY b.mata_pelajaran_id) AS bobot
                 FROM calon_siswa cs JOIN program_keahlian pk ON cs.program_keahlian_id = pk.id
-                JOIN sekolah sk ON cs.sekolah_id = sk.id
                 WHERE YEAR(cs.waktu_daftar) = ? AND cs.program_keahlian_id = ?";
-        
+
         $query = $this->db->query($sql, array($tahun, $program_keahlian));
         return $query->result();
     }
@@ -172,6 +166,27 @@ class Registration_model extends CI_Model {
         $query = $this->db->count_all_results();
 
         return $query;
+    }
+
+    public function get_captcha($data)
+    {
+        $query = $this->db->insert_string('captcha', $data);
+        $this->db->query($query);
+    }
+
+    public function check_captcha($captcha)
+    {
+        $expiration = time() - 7200; // Two hour limit
+        $this->db->where('captcha_time <', $expiration);
+        $this->db->delete('captcha');
+
+        $this->db->where('word', $captcha);
+        $this->db->where('ip_address', $this->input->ip_address());
+        $this->db->where('captcha_time > ', $expiration);
+        $this->db->from('captcha');
+        $row = $this->db->count_all_results();
+
+        return $row;
     }
 
 }
